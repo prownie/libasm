@@ -2,4 +2,6 @@
 
 make
 gcc -Wall -Wextra -Werror srcs/main.c libasm.a && ./a.out
+#gcc -g3 -fsanitize=address -Wall -Wextra -Werror srcs/main.c libasm.a && ./a.out
 rm a.out
+make fclean
