@@ -6,7 +6,7 @@
 #    By: rpichon <rpichon@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/30 11:25:01 by jdel-ros          #+#    #+#              #
-#    Updated: 2021/01/05 13:28:58 by rpichon          ###   ########lyon.fr    #
+#    Updated: 2021/01/05 15:50:42 by rpichon          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f test
 
 re: fclean all
 

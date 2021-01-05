@@ -6,7 +6,7 @@
 /*   By: rpichon <rpichon@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 16:57:04 by rpichon           #+#    #+#             */
-/*   Updated: 2021/01/05 15:42:28 by rpichon          ###   ########lyon.fr   */
+/*   Updated: 2021/01/05 16:11:01 by rpichon          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,19 @@ int main(void) {
 	write(1, "\n", 1);
 
 	printf("errno value before error = %d", errno);
-	printf("\ntest15 : write(1, NULL, 1)\n");
+	printf("\ntest15 : write(-1, \"t\", 1)\n");
+	w1 = ft_write(-1, "t", 1);
+	printf("my errno = %d\n", errno);
+	w2 = write(-1, "t", 1);
+	printf("true errno = %d\n", errno);
+	if (w1 != w2)
+		print_ko();
+	else
+		print_ok();
+	write(1, "\n", 1);
+
+	printf("errno value before error = %d", errno);
+	printf("\ntest16 : write(1, NULL, 1)\n");
 	w1 = ft_write(1, NULL, 1);
 	printf("my errno = %d\n", errno);
 	w2 = write(1, NULL, 1);
@@ -185,17 +197,6 @@ int main(void) {
 		print_ok();
 	write(1, "\n", 1);
 
-	printf("errno value before error = %d", errno);
-	printf("\ntest16 : write(-1, \"t\", 1)\n");
-	w1 = ft_write(-1, "t", 1);
-	printf("my errno = %d\n", errno);
-	w2 = write(-1, "t", 1);
-	printf("true errno = %d\n", errno);
-	if (w1 != w2)
-		print_ko();
-	else
-		print_ok();
-	write(1, "\n", 1);
 
 	str1 = strdup("ceci est un test");
 	printf("\ntest17 : write(1, &str1, 1)\n");
@@ -224,20 +225,55 @@ int main(void) {
 	printf("\033[1;34m%30s\033[0m\n","TEST FT_STRDUP");
 	printf("\ntest19 : ft_strdup(\"Hello\")\n");
 	str1 = ft_strdup("Hello");
-	printf("str1 = %s\n\n",str1);
+	str2 = ft_strdup("Hello");
+	printf("str1 = %s\n",str1);
+	if (strcmp(str1, str2))
+		print_ko();
+	else
+		print_ok();
 
 	printf("\ntest20 : ft_strdup(\"\")\n");
 	str1 = ft_strdup("");
+	str2 = ft_strdup("");
+	if (strcmp(str1, str2))
+		print_ko();
+	else
+		print_ok();
 	printf("str1 = %s\n",str1);
 
+	printf("\033[1;34m%30s\033[0m\n","TEST FT_READ");
+	int fd;
+	char buf1[150];
+	char buf2[150];
+	int v1;
+	int v2;
 
-	char buf[1500];
-	int fd = open("test", O_RDONLY);
-	read(fd, &buf, 1050);
-	printf("test ft_read(Makefile, 1050)= \n%s\n\n", buf);
+	fd = open("lotr", O_RDONLY);
+	v1 = ft_read(fd, &buf1, 15);
+	printf("\ntest ft_read(lotr, 15) : \n%s | nb_read = %d\n", buf1, v1);
+	close(fd);
 
-	printf("valeur errno = %d\n\n", errno);
+	fd = open("lotr", O_RDONLY);
+	v2 = read(fd, &buf2, 15);
+	printf("%s | nb_read = %d\n", buf2, v2);
+	close(fd);
+	if (strcmp(buf1,buf2) && v1 == v2)
+		print_ko();
+	else
+		print_ok();
+	write(1, "\n",1 );
+
 	fd = -1;
-	ft_read(fd, &buf, 1050);
-	printf("valeur errno = %s\n\n", strerror(errno));
+	printf("errno value before = %d", errno);
+	v1 = ft_read(fd, &buf1, 15);
+	printf("\ntest bad_fd ft_read(fd -1, 15) : \n%s | nb_read = %d\n", buf1, v1);
+	printf("my errno = %d\n", errno);
+	v2 = read(fd, &buf2, 15);
+	printf("%s | nb_read = %d\n", buf2, v2);
+	printf("true errno = %d\n", errno);
+	if (strcmp(buf1,buf2) && v1 == v2)
+		print_ko();
+	else
+		print_ok();
+	write(1, "\n",1 );
 }
